@@ -27,6 +27,8 @@
             window.validate = function ()
             {
                 var passwordDigits = /(.*\d){2}/;
+                var atSymbol = /(@){1}/;
+                var period = /(\.){1}/;
                 var form = document.forms[0];
                 var firstName = form.fname.value;
                 var lastName = form.lname.value;
@@ -35,70 +37,70 @@
                 var email = form.email.value;
                 var errors = [];
 
+                clearErrors(form.fname);
+                clearErrors(form.lname);
+                clearErrors(form.uname);
+                clearErrors(form.pass);
+                clearErrors(form.email);
+
+
                 if (isEmptyValue(firstName)) {
-                    form.fname.className += 'error';
+                    form.fname.classList.add('error');
                     errors.push('You must enter a valid first name.');
                 }
 
                 if (isEmptyValue(lastName)) {
-                    form.lname.className += 'error';
-                    errors.push('You must enter a valid last name.')
+                    form.lname.classList.add('error');
+                    errors.push('You must enter a valid last name.');
                 }
 
                 if (isEmptyValue(username)) {
-                    form.uname.className += 'error';
-                    errors.push('You must enter a valid last name.')
+                    form.uname.classList.add('error');
+                    errors.push('You must enter a valid last name.');
                 }
 
                 if (isEmptyValue(password)) {
-                    form.pass.className += 'error';
-                    errors.push('You must enter a valid last name.')
+                    form.pass.classList.add('error');
+                    errors.push('You must enter a valid last name.');
                 }
 
                 if (isEmptyValue(email)) {
-                    form.email.className += 'error';
-                    errors.push('You must enter a valid last name.')
+                    form.email.classList.add('error');
+                    errors.push('You must enter a valid last name.');
                 }
 
                 if (username === password)
                 {
-                    form.pass.className += 'error';
-                    errors.push('Password cannot be the same as your username.')
+                    form.pass.classList.add('error');
+                    errors.push('Password cannot be the same as your username.');
                 }
 
-                if (!passwordDigits.test(password))
+                if (!passwordDigits.test(password) || password.length < 15)
                 {
-                    form.pass.className += 'error';
-
+                    form.pass.classList.add('error');
+                    errors.push('Password must be at least fifteen characters and contain two numbers.');
                 }
 
-                    // password not same as username
-
-                    // password at least 15chars and two numbers
-
-                    // email should contain at least a @ and a .
-
-                    // notify user of failed field and why
-
-                    return true;
-            }
-
-            function areFieldsPopulated(form)
-            {
-                var isValid = true;
-
-                if (isEmptyValue(form.fname.value))
+                if (!atSymbol.test(email) || !period.test(email))
                 {
-                    form.fname.className += 'error';
-                    validationMessage += 'First Name cannot be blank.\r\n';
-                    isValid = false;
+                    form.email.classList.add('error');
+                    errors.push('Email address is invalid.');
                 }
 
-                if(isEmptyValue(form.lname.value))
+                if (errors.length > 0)
                 {
-                    form.lname.className += 'error';
-                    validat
+                    var message = 'Errors found:\n';
+                    errors.forEach(function(element)
+                    {
+                        message += element + "\n";
+                    })
+
+                    alert(message);
+
+                    return false;
                 }
+
+                return true;
             }
 
             function isEmptyValue(value)
@@ -106,38 +108,9 @@
                 return value === null || value === '';
             }
 
-            function validator(element, name)
+            function clearErrors(element)
             {
-                var validationMessages = [];
-
-                return {
-                    notNull: notNull,
-                    matches: matches,
-                    isValid: true,
-                    validationMessages: validationMessages
-                }
-
-                function notNull()
-                {
-                    if(element.value === null || element.value === '')
-                    {
-                        isValid = false;
-                        validationMessages.push(name + ' cannot be empty.')
-                    }
-                }
-
-                function matches(input)
-                {
-
-                }
-
-                function equals(input)
-                {
-                    if(element.value === input)
-                    {
-                        isValid = false;
-                    }
-                }
+                element.classList.remove('error');
             }
         </script>
 
