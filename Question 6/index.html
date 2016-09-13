@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Question 6</title>
+        <style>
+            .error
+            {
+                background-color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <form method="post" action="dosomething" onsubmit="return window.validate();">
+            <label for="fname">First Name:</label>
+            <input type="text" name="fname" id="fname" /><br />
+            <label for="lname">Last Name:</label>
+            <input type="text" name="lname" id="lname" /><br />
+            <label for="uname">User Name:</label>
+            <input type="text" name="uname" id="uname" /><br />
+            <label for="pass">Password:</label>
+            <input type="password" name="pass" id="pass" /><br />
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" /><br />
+            <input type="submit" />
+        </form>
+        <script>
+            window.validate = function ()
+            {
+                var passwordDigits = /(.*\d){2}/;
+                var form = document.forms[0];
+                var firstName = form.fname.value;
+                var lastName = form.lname.value;
+                var username = form.uname.value;
+                var password = form.pass.value;
+                var email = form.email.value;
+                var errors = [];
+
+                if (isEmptyValue(firstName)) {
+                    form.fname.className += 'error';
+                    errors.push('You must enter a valid first name.');
+                }
+
+                if (isEmptyValue(lastName)) {
+                    form.lname.className += 'error';
+                    errors.push('You must enter a valid last name.')
+                }
+
+                if (isEmptyValue(username)) {
+                    form.uname.className += 'error';
+                    errors.push('You must enter a valid last name.')
+                }
+
+                if (isEmptyValue(password)) {
+                    form.pass.className += 'error';
+                    errors.push('You must enter a valid last name.')
+                }
+
+                if (isEmptyValue(email)) {
+                    form.email.className += 'error';
+                    errors.push('You must enter a valid last name.')
+                }
+
+                if (username === password)
+                {
+                    form.pass.className += 'error';
+                    errors.push('Password cannot be the same as your username.')
+                }
+
+                if (!passwordDigits.test(password))
+                {
+                    form.pass.className += 'error';
+
+                }
+
+                    // password not same as username
+
+                    // password at least 15chars and two numbers
+
+                    // email should contain at least a @ and a .
+
+                    // notify user of failed field and why
+
+                    return true;
+            }
+
+            function areFieldsPopulated(form)
+            {
+                var isValid = true;
+
+                if (isEmptyValue(form.fname.value))
+                {
+                    form.fname.className += 'error';
+                    validationMessage += 'First Name cannot be blank.\r\n';
+                    isValid = false;
+                }
+
+                if(isEmptyValue(form.lname.value))
+                {
+                    form.lname.className += 'error';
+                    validat
+                }
+            }
+
+            function isEmptyValue(value)
+            {
+                return value === null || value === '';
+            }
+
+            function validator(element, name)
+            {
+                var validationMessages = [];
+
+                return {
+                    notNull: notNull,
+                    matches: matches,
+                    isValid: true,
+                    validationMessages: validationMessages
+                }
+
+                function notNull()
+                {
+                    if(element.value === null || element.value === '')
+                    {
+                        isValid = false;
+                        validationMessages.push(name + ' cannot be empty.')
+                    }
+                }
+
+                function matches(input)
+                {
+
+                }
+
+                function equals(input)
+                {
+                    if(element.value === input)
+                    {
+                        isValid = false;
+                    }
+                }
+            }
+        </script>
+
+    </body>
+</html>
