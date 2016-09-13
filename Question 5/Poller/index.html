@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Question 5</title>
+    </head>
+    <body>
+        <div id="status"></div>
+        <div id="messages"></div>
+
+        <script type="text/javascript">
+            var interval = 500,
+                maxMessages = 5,
+                svcUrl = 'http://localhost:54648/MessagePoll'; // changed to local site
+
+            // CODE GOES HERE
+
+            function getMessages()
+            {
+                var xhr = new XMLHttpRequest();
+
+                xhr.onreadystatechange = function ()
+                {
+                    if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200)
+                    {
+                        var messages = JSON.parse(xhr.responseText);
+
+                        displayMessages(messages);
+                    }
+                }
+
+                xhr.open('GET', svcUrl, true);
+                xhr.send();
+            }
+
+            function displayMessages(messages)
+            {
+                messages = messages.slice(0, maxMessages);
+                var messageElement = document.getElementById("messages");
+
+                clearChildNodes(messageElement);
+
+                messages.forEach(function (element, index, array)
+                {
+                    var messageNode = document.createElement("div");
+                    messageNode.innerHTML = element.content;
+
+                    messageElement.appendChild(messageNode)
+                });
+            }
+
+            function clearChildNodes(element)
+            {
+                while (element.firstChild)
+                {
+                    element.removeChild(element.firstChild);
+                }
+            }
+
+            setInterval(getMessages, interval);
+
+        </script>
+
+    </body>
+</html>
